@@ -252,7 +252,14 @@
 	乙 Push--> 远程仓库 Pull --> 甲
 	1、把文件夹放到远程仓库中
 		(1)文件夹右击Git Bash
-		(2)
+		(2)文件夹右击Git Bash
+		(3)git push https://github.com/soumnsdt/GitText.git master
+	2、从远程仓库中把文件下载到电脑中
+		(1)初始化：git init
+		(2)文件夹右击Git Bash
+		(3)git pull https://github.com/soumnsdt/GitText.git master
+		(4)修改文件后，再推送到远程仓库。
+		(5)
 
 
 
