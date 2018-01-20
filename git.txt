@@ -1,0 +1,303 @@
+一、git初始化及配置
+
+	1、初始化：git init（git初始化操作）
+	2、配置：
+		git config user.name "名字"
+		git config user.email "邮箱"
+
+实战：
+	1、打开git Bash Here
+	2、切换到目标目录：cd /t
+	3、创建一个文件夹：mkdir android
+	4、切换到当前目录: cd android
+	5、查看当前路径： pwd
+	6、查看文件：ls
+	7、查看隐藏文件： ls -a
+	8、git 初始化操作： git init
+	9、查看 .git中的内容：tree .git/
+	10、ls -la
+	11、配置：
+	git config user.name "名字"
+	git config user.email "邮箱"
+
+二、向git添加和提交文件
+	1、状态
+		git status
+			可以查看有哪些文件已经被修改；有哪些文件有待被提交
+	2、git分区
+		git有3个区：
+			工作区：我们打开文件夹所能看到的那些内容。
+			缓存区：有待下次提交的那部分文件。
+			版本库：已经提交，被纳入版本库的那些文件。
+	3、提交
+		工作区中的a.txt文件通过git add添加到缓存区。
+		缓存区中的a.txt通过git commit添加到版本库中。
+
+实战：
+	1、pwd
+	2、git status:
+		nothing to commit:没有东西要去提交。
+	3、>a
+	4、git status
+	5、git add a
+	6、git status
+	7、Changes to be committed:
+  (use "git rm --cached <file>..." to unstage)
+
+        new file:   a
+        说明已经加到了暂存区。
+    8、git commit
+    9、
+		# Please enter the commit message for your changes. Lines starting
+		# with '#' will be ignored, and an empty message aborts the commit.
+		# On branch master
+		#
+		# Initial commit
+		#
+		# Changes to be committed:
+		#       new file:   a
+	10、添加修改信息：add a file
+		将文件提交到仓库:git commit -m "add a readme file"
+	11、在a文件中添加内容
+		echo "ao">>a
+	12、git status:
+			 modified:   a
+			 有一个修改的文件
+	13、commit过的文件，就会显示modified:   a
+	14、git add a
+	15、git commit -m "update a file."
+	 1 file changed, 1 insertion(+)
+	 一个文件改变，增加了一行。
+	16、git status
+
+三、告诉git忽略规则
+	(1)忽略一类文件
+		1、> a.o  创建了一个a.o文件
+		2、> .gitignore  .gitignore忽略列表文件，告诉git一些规则。
+		3、echo "a.o" >> .gitignore:
+			把a.o文件添加到.gitignore中。
+		4、cat .gitignore:查看.gitignore文件中的内容。
+		5、此时git status,a.o文件就会被忽略
+		6、但是再次添加一个b.o文件: > b.o 就会又被查看到。所以规则应该写成：echo "*.o" >> .gitignore
+		7、查看规则：cat .gitignore
+	（2）忽略一个文件夹
+		1、移动文件到文件夹
+			mkdir out 
+			mv *.o out
+		2、查看
+			ls -R:查看所有文件，包括子目录下的文件。
+		3、清空.gitignore文件
+			> .gitignore
+		4、查看.gitignore文件中的内容
+			cat .gitignore
+		5、查看具体状态
+			git status -u
+		6、忽略文件夹
+			echo "out/" >> .gitignore
+		7、git status
+
+
+四、Git快照和日志
+	时间线
+	每一次提交就叫一个快照。
+	日志：1、git log -1:查看最近一次提交
+			 git log -2:查看最近两次提交
+			 git log --oneline:一次提交一行显示完毕
+		  2、gitk：图形化界面
+
+
+五、Git差异比较及版本检出
+	master与HEAD
+	head->master->a.txt
+	1、差异
+		工作区与缓存区：git diff
+		缓存区与版本库：git diff --cached/--staged
+	2、取出历史版本
+		缓存区->工作区：git checkout --A.TXT
+		版本库->工作区/缓存区：git checkout HEAD   先覆盖缓存区的内容，然后再覆盖工作区的内容。
+
+实战：
+	1、创建文件夹d
+		> d
+	2、添加内容：
+		echo "first" >> d
+	3、cat d
+	4、再次添加内容：
+		echo "second" >> d
+	5、git status
+	6、查看差异
+		git diff
+		工作区与版本库之间的差异：git diff HEAD
+
+六、分支
+	1、新建分支
+		1、查看文件是否为空：ls -a
+		2、git  init
+		3、> 1
+		4、git status
+		5、git add 1
+		6、git commit -m "c1"
+		7、git log --oneline --graph --decorate
+		8、> 2 
+		9、git status 
+		10、git add 2
+		11、git commit -m "c2"
+		12、git status
+		13、git log --oneline --graph --decorate
+		14、> 3
+		15、git status
+		16、git add 3
+		17、git commit -m "c3"
+		18、git status
+		19、git log --oneline --graph --decorate
+		20、创建新分支dev：git branch dev
+		21、查看分支：git branch
+		22、切换到dev分支：git checkout dev
+		23、git log --oneline --graph --decorate
+		24、> 4
+		25、git add 4
+		26、git commit -m "c4"
+		27、git log --oneline --graph --decorate
+		28、切换到master分支：git checkout master
+		29、git log --oneline --graph
+		30、新建bugfix分支：git checkout -b bugfix
+		这种方法帮我们做了两步：
+			1、创建了新分支bugfix：git branch bugfix
+			2、当前的分支切换到了bugfix分支上。git checkout bugfix
+		31、查看现在在什么分支上？git branch
+		32、> 5
+		33、git add 5
+			git commit -m "c5"
+			git log --oneline --graph --decorate
+		34、查看所有分支：git branch -v
+
+
+七、git分支合并
+	1、git status
+	2、git branch -v
+	3、git log --oneline --graph --decorate
+	4、git checkout master
+	5、git log --oneline --graph --decorate
+	6、git merge bugfix
+	7、ls
+	8、git log --oneline --graph --decorate
+	9、git branch -v
+	10、删除分支：git branch -d bugfix
+	11、git branch -v
+	12、git checkout dev
+	13、> 6
+	14、git add 6
+	15、git commit -m "c6"
+	16、git status
+	17、git log --oneline --graph --decorate
+	18、git checkout master
+	19、git log --oneline --graph --decorate
+	20、在master分支上合并dev分支：git merge dev
+	21、要输入本次提交的信息
+	22、保存：ZZ(大写)    修改：c
+		使用 git commit --amend 命令，（修改最近一次提交的注释信息），会进入到vim 编辑器。然后，你会发现编辑器里你怎么输入都没反应，这是因为vim处在不可编辑状态，按下字母键c，此时进入编辑状态，可以开始修改注释信息了。在然后你会发现你怎么都退出不了，回到shell了，然后操作如下： ESC  --》 退出编辑状态；接着 连续按两次大写字母键 Z，接着你会惊喜的发现，终于保存好退出来了！
+	23、git log --oneline --graph --decorate
+
+
+八、git解决冲突
+	1、git status
+	2、git log --oneline --decorate
+	3、git checkout dev
+	4、git status
+	5、整合dev分支：git merge master
+		是一次快进
+	6、git status
+	7、ls
+	8、git log --oneline --decorate
+	9、echo "add on dev" >> 1
+	10、git add 1
+	11、git commit -m 'add on dev'
+	12、git status 
+	13、git log --oneline --decorate
+	14、git checkout master
+	15、ls
+	16、修改同一个文件：echo 'add on master' >> 1
+	17、git add -A
+	18、git commit -m "add on master"
+	19、git log --oneline --decorate
+	20、git merge dev    发生了冲突
+	21、git status
+	22、打开1文件：vi 1
+	23、只留下add on master和add on dev
+	24、保存
+	25、添加文件：git add -A：一次加多个文件
+	26、git status
+	27、git diff --cached
+	28、git commit -m "merge dev"
+	29、git status
+	30、git log --oneline --decorate
+
+
+九、Git存储和恢复工作进度
+	dev分支：
+	1、git status
+	2、ls
+	3、echo "new " >> 6
+	4、git status
+	5、暂存工作：git stash save  save可以省略
+	6、git status
+	7、查看暂存的工作：git stash list
+	8、恢复工作：git stash apply
+	9、git status
+	10、清除工作：git stash clear
+	11、git status
+
+十、Git远程仓库
+	甲 push--> 远程仓库 clone--> 乙
+	乙 Push--> 远程仓库 Pull --> 甲
+	1、把文件夹放到远程仓库中
+		(1)文件夹右击Git Bash
+		(2)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+将工作目录的文件放到Git仓库只需要两步：
+①git add 文件名
+②git commit -m "你干了啥"
+
+1、打开CMD
+2、进入到文件夹
+3、git init（git初始化操作）
+4、新建一个README.md
+5、cmd中写入git add README.md
+6、将文件提交到仓库:git commit -m "add a readme file"
+
+
+git status
+
+MIT协议：
+Copyright (C) <year> 2018 DT
+
+　　Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+　　
+　　The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+git log:查看历史数据
+
+
+git resert
+
